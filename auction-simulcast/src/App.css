@@ -1,0 +1,464 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Animation classes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes bidPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* Simulcast tile animations */
+.simulcast-tile {
+  animation: fadeInUp 0.6s ease-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.simulcast-tile:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.simulcast-tile:hover .car-image {
+  transform: scale(1.05);
+}
+
+/* Live auction pulse animation */
+.live-auction {
+  animation: pulse 2s infinite;
+}
+
+.live-auction .bid-amount {
+  animation: bidPulse 2s infinite;
+}
+
+/* Bid amount styling */
+.bid-amount {
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Status badges */
+.status-badge {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Button hover effects */
+.action-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading animation */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #3b82f6;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive grid */
+.simulcast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  min-height: calc(100vh - 80px);
+  align-items: start;
+}
+
+/* Default grid behavior when no view mode is specified */
+.simulcast-grid:not(.compact-view):not(.detailed-view) {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Compact view - smaller cards */
+.simulcast-grid.compact-view {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.8rem;
+  padding: 0.8rem;
+}
+
+/* Responsive adjustments for compact view */
+@media (max-width: 640px) {
+  .simulcast-grid.compact-view {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .simulcast-grid.compact-view {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .simulcast-grid.compact-view {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.2rem;
+    padding: 1.2rem;
+  }
+}
+
+/* Detailed view - larger cards with more information */
+.simulcast-grid.detailed-view {
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+/* Responsive adjustments for detailed view */
+@media (max-width: 768px) {
+  .simulcast-grid.detailed-view {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .simulcast-grid.detailed-view {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.2rem;
+    padding: 1.2rem;
+  }
+}
+
+@media (min-width: 1201px) {
+  .simulcast-grid.detailed-view {
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+/* Auction view - full screen layout */
+.auction-view {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.auction-image-section {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.auction-details-section {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .auction-view {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .auction-image-section {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .simulcast-grid:not(.compact-view):not(.detailed-view) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .auction-view {
+    padding: 1rem;
+  }
+
+  .auction-image-section {
+    height: 300px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .simulcast-grid:not(.compact-view):not(.detailed-view) {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+/* Top navbar styling */
+.top-navbar {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Dialog styling */
+.modern-dialog {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+}
+
+/* Form styling */
+.modern-input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  color: #1e293b;
+  transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Card hover effects */
+.hover-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effects */
+.glow-effect {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.glow-effect:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+}
+
+/* Status colors */
+.status-live {
+  background: linear-gradient(45deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.status-ended {
+  background: linear-gradient(45deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.status-available {
+  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.status-sold {
+  background: linear-gradient(45deg, #f59e0b, #d97706);
+  color: white;
+}
+
+/* Timer styling */
+.timer-display {
+  background: linear-gradient(45deg, #f59e0b, #d97706);
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Condition badges */
+.condition-excellent {
+  background: #22c55e;
+  color: white;
+}
+
+.condition-good {
+  background: #84cc16;
+  color: white;
+}
+
+.condition-fair {
+  background: #f59e0b;
+  color: white;
+}
+
+.condition-poor {
+  background: #ef4444;
+  color: white;
+}
+
+/* Responsive utilities */
+@media (max-width: 480px) {
+  .simulcast-grid:not(.compact-view):not(.detailed-view) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .bid-amount {
+    font-size: 1.5rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .simulcast-tile {
+    border: 2px solid #000000;
+  }
+
+  .bid-amount {
+    color: #000000;
+    -webkit-text-fill-color: #000000;
+  }
+}
