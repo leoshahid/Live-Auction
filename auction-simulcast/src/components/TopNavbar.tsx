@@ -35,7 +35,6 @@ import {
   PlayArrow as PlayArrowIcon,
   ViewModule as CompactViewIcon,
   ViewList as DetailedViewIcon,
-  Menu as MenuIcon,
 } from "@mui/icons-material";
 
 interface TopNavbarProps {
@@ -69,9 +68,6 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
   const [searchAnchorEl, setSearchAnchorEl] = useState<null | HTMLElement>(
     null
   );
-  const [mobileMenuAnchor, setMobileMenuAnchor] = useState<null | HTMLElement>(
-    null
-  );
   const [startAuctionDialog, setStartAuctionDialog] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [auctionDuration, setAuctionDuration] = useState(300000);
@@ -90,14 +86,6 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
 
   const handleSearchClose = () => {
     setSearchAnchorEl(null);
-  };
-
-  const handleMobileMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMenuAnchor(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMenuAnchor(null);
   };
 
   const handleStartAuction = () => {
@@ -133,20 +121,15 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <Toolbar sx={{ minHeight: "80px !important", px: { xs: 1, sm: 2 } }}>
+      <Toolbar sx={{ minHeight: "80px !important" }}>
         {/* Logo and Title */}
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: { xs: 1, sm: 2 },
-            flexGrow: 1,
-          }}
+          sx={{ display: "flex", alignItems: "center", gap: 2, flexGrow: 1 }}
         >
           <Box
             sx={{
-              width: { xs: 32, sm: 40 },
-              height: { xs: 32, sm: 40 },
+              width: 40,
+              height: 40,
               background: "linear-gradient(45deg, #3b82f6, #1d4ed8)",
               borderRadius: "12px",
               display: "flex",
@@ -155,9 +138,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
               boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)",
             }}
           >
-            <CarIcon
-              sx={{ color: "white", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}
-            />
+            <CarIcon sx={{ color: "white", fontSize: "1.5rem" }} />
           </Box>
           <Typography
             variant="h5"
@@ -168,33 +149,17 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              fontSize: { xs: "1.1rem", sm: "1.5rem" },
-              display: { xs: "none", sm: "block" },
             }}
           >
             {auctionName}
           </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              fontWeight: 800,
-              background: "linear-gradient(45deg, #3b82f6, #1d4ed8)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              display: { xs: "block", sm: "none" },
-            }}
-          >
-            LAS
-          </Typography>
         </Box>
 
-        {/* Current Auction Info - Hidden on mobile */}
+        {/* Current Auction Info */}
         {currentAuction && (
           <Box
             sx={{
-              display: { xs: "none", md: "flex" },
+              display: "flex",
               alignItems: "center",
               gap: 3,
               background:
@@ -260,9 +225,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
           </Box>
         )}
 
-        {/* Admin Controls - Hidden on mobile */}
+        {/* Admin Controls */}
         {userRole === "admin" && (
-          <Box sx={{ display: { xs: "none", lg: "flex" }, gap: 2, mr: 3 }}>
+          <Box sx={{ display: "flex", gap: 2, mr: 3 }}>
             {!currentAuction ? (
               <Button
                 variant="contained"
@@ -322,8 +287,8 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
           </Box>
         )}
 
-        {/* View Mode Switcher - Hidden on mobile */}
-        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, mr: 2 }}>
+        {/* View Mode Switcher */}
+        <Box sx={{ display: "flex", gap: 1, mr: 2 }}>
           <Button
             variant={viewMode === "compact" ? "contained" : "outlined"}
             onClick={() => onViewModeChange?.("compact")}
@@ -394,100 +359,32 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
           </Button>
         </Box>
 
-        {/* Desktop Actions */}
-        <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
-          {/* Search */}
-          <IconButton
-            size="large"
-            onClick={handleSearchMenu}
-            sx={{
-              color: "rgba(0, 0, 0, 0.7)",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "12px",
-              mr: 1,
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-              },
-            }}
-          >
-            <SearchIcon />
-          </IconButton>
-
-          {/* Notifications */}
-          <IconButton
-            size="large"
-            sx={{
-              color: "rgba(0, 0, 0, 0.7)",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "12px",
-              mr: 1,
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-              },
-            }}
-          >
-            <Badge badgeContent={notifications} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-
-          {/* User Menu */}
-          <IconButton
-            size="large"
-            onClick={handleMenu}
-            sx={{
-              color: "rgba(0, 0, 0, 0.7)",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "12px",
-              mr: 2,
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-              },
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                background: "linear-gradient(45deg, #3b82f6, #1d4ed8)",
-                fontWeight: 700,
-              }}
-            >
-              {userName.charAt(0).toUpperCase()}
-            </Avatar>
-          </IconButton>
-        </Box>
-
-        {/* Mobile Menu Button */}
-        <Box sx={{ display: { xs: "flex", md: "none" }, alignItems: "center" }}>
-          <IconButton
-            size="large"
-            onClick={handleMobileMenu}
-            sx={{
-              color: "rgba(0, 0, 0, 0.7)",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "12px",
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Box>
-
-        {/* Search Menu */}
+        {/* Search */}
+        <IconButton
+          size="large"
+          onClick={handleSearchMenu}
+          sx={{
+            color: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "rgba(0, 0, 0, 0.05)",
+            borderRadius: "12px",
+            mr: 1,
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+            },
+          }}
+        >
+          <SearchIcon />
+        </IconButton>
         <Menu
           anchorEl={searchAnchorEl}
           open={Boolean(searchAnchorEl)}
           onClose={handleSearchClose}
           PaperProps={{
             sx: {
-              backgroundColor: "white",
-              border: "1px solid rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#1a1a2e",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
               borderRadius: "12px",
               mt: 1,
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
             },
           }}
         >
@@ -499,230 +396,57 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
           </MenuItem>
         </Menu>
 
-        {/* Mobile Menu */}
-        <Menu
-          anchorEl={mobileMenuAnchor}
-          open={Boolean(mobileMenuAnchor)}
-          onClose={handleMobileMenuClose}
-          PaperProps={{
-            sx: {
-              backgroundColor: "white",
-              border: "1px solid rgba(0, 0, 0, 0.1)",
-              borderRadius: "12px",
-              mt: 1,
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
-              minWidth: 250,
+        {/* Notifications */}
+        <IconButton
+          size="large"
+          sx={{
+            color: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "rgba(0, 0, 0, 0.05)",
+            borderRadius: "12px",
+            mr: 1,
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
             },
           }}
         >
-          {/* Current Auction Info for Mobile */}
-          {currentAuction && (
-            <Box sx={{ p: 2, borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
-              <Typography variant="subtitle2" color="#64748b" sx={{ mb: 1 }}>
-                Current Auction
-              </Typography>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
-                <MoneyIcon sx={{ color: "#3b82f6", fontSize: "1rem" }} />
-                <Typography
-                  variant="body2"
-                  color="#1e293b"
-                  sx={{ fontWeight: 600 }}
-                >
-                  ${currentAuction.currentBid?.toLocaleString() || 0}
-                </Typography>
-              </Box>
-              {currentAuction.timeRemaining && (
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-                >
-                  <TimerIcon sx={{ color: "#f59e0b", fontSize: "1rem" }} />
-                  <Typography
-                    variant="body2"
-                    color="#1e293b"
-                    sx={{ fontWeight: 600, fontFamily: "monospace" }}
-                  >
-                    {formatTime(currentAuction.timeRemaining)}
-                  </Typography>
-                </Box>
-              )}
-              {currentAuction.currentBidderName && (
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <PersonIcon sx={{ color: "#22c55e", fontSize: "1rem" }} />
-                  <Typography
-                    variant="body2"
-                    color="#1e293b"
-                    sx={{ fontWeight: 500 }}
-                  >
-                    {currentAuction.currentBidderName}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          )}
+          <Badge badgeContent={notifications} color="error">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
 
-          {/* View Mode Switcher for Mobile */}
-          <Box sx={{ p: 2, borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
-            <Typography variant="subtitle2" color="#64748b" sx={{ mb: 1 }}>
-              View Mode
-            </Typography>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Button
-                variant={viewMode === "compact" ? "contained" : "outlined"}
-                onClick={() => {
-                  onViewModeChange?.("compact");
-                  handleMobileMenuClose();
-                }}
-                size="small"
-                sx={{
-                  flex: 1,
-                  textTransform: "none",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  ...(viewMode === "compact" && {
-                    background:
-                      "linear-gradient(45deg, #3b82f6 30%, #1d4ed8 90%)",
-                    color: "white",
-                  }),
-                }}
-                startIcon={<CompactViewIcon sx={{ fontSize: "0.9rem" }} />}
-              >
-                Compact
-              </Button>
-              <Button
-                variant={viewMode === "detailed" ? "contained" : "outlined"}
-                onClick={() => {
-                  onViewModeChange?.("detailed");
-                  handleMobileMenuClose();
-                }}
-                size="small"
-                sx={{
-                  flex: 1,
-                  textTransform: "none",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  ...(viewMode === "detailed" && {
-                    background:
-                      "linear-gradient(45deg, #3b82f6 30%, #1d4ed8 90%)",
-                    color: "white",
-                  }),
-                }}
-                startIcon={<DetailedViewIcon sx={{ fontSize: "0.9rem" }} />}
-              >
-                Detailed
-              </Button>
-            </Box>
-          </Box>
-
-          {/* Admin Controls for Mobile */}
-          {userRole === "admin" && (
-            <Box sx={{ p: 2, borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
-              <Typography variant="subtitle2" color="#64748b" sx={{ mb: 1 }}>
-                Admin Controls
-              </Typography>
-              {!currentAuction ? (
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setStartAuctionDialog(true);
-                    handleMobileMenuClose();
-                  }}
-                  disabled={availableVehicles.length === 0}
-                  fullWidth
-                  sx={{
-                    background:
-                      "linear-gradient(45deg, #22c55e 30%, #16a34a 90%)",
-                    color: "white",
-                    fontWeight: 700,
-                    py: 1,
-                    borderRadius: "8px",
-                    textTransform: "none",
-                    fontSize: "0.9rem",
-                    mb: 1,
-                  }}
-                  startIcon={<PlayArrowIcon />}
-                >
-                  Start Auction
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    handleEndAuction();
-                    handleMobileMenuClose();
-                  }}
-                  fullWidth
-                  sx={{
-                    background:
-                      "linear-gradient(45deg, #ef4444 30%, #dc2626 90%)",
-                    color: "white",
-                    fontWeight: 700,
-                    py: 1,
-                    borderRadius: "8px",
-                    textTransform: "none",
-                    fontSize: "0.9rem",
-                    mb: 1,
-                  }}
-                  startIcon={<StopIcon />}
-                >
-                  End Auction
-                </Button>
-              )}
-            </Box>
-          )}
-
-          {/* Mobile Actions */}
-          <Box sx={{ p: 2 }}>
-            <MenuItem
-              onClick={() => {
-                handleSearchMenu(mobileMenuAnchor as any);
-                handleMobileMenuClose();
-              }}
-              sx={{ color: "#1e293b", mb: 1 }}
-            >
-              <SearchIcon sx={{ mr: 2, fontSize: "1.2rem" }} />
-              Search
-            </MenuItem>
-            <MenuItem sx={{ color: "#1e293b", mb: 1 }}>
-              <Badge badgeContent={notifications} color="error">
-                <NotificationsIcon sx={{ mr: 2, fontSize: "1.2rem" }} />
-              </Badge>
-              Notifications
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleMenu(mobileMenuAnchor as any);
-                handleMobileMenuClose();
-              }}
-              sx={{ color: "#1e293b" }}
-            >
-              <Avatar
-                sx={{
-                  width: 24,
-                  height: 24,
-                  background: "linear-gradient(45deg, #3b82f6, #1d4ed8)",
-                  fontWeight: 700,
-                  mr: 2,
-                  fontSize: "0.8rem",
-                }}
-              >
-                {userName.charAt(0).toUpperCase()}
-              </Avatar>
-              {userName}
-            </MenuItem>
-          </Box>
-        </Menu>
-
-        {/* Desktop User Menu */}
+        {/* User Menu */}
+        <IconButton
+          size="large"
+          onClick={handleMenu}
+          sx={{
+            color: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "rgba(0, 0, 0, 0.05)",
+            borderRadius: "12px",
+            mr: 2,
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+            },
+          }}
+        >
+          <Avatar
+            sx={{
+              width: 32,
+              height: 32,
+              background: "linear-gradient(45deg, #3b82f6, #1d4ed8)",
+              fontWeight: 700,
+            }}
+          >
+            {userName.charAt(0).toUpperCase()}
+          </Avatar>
+        </IconButton>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleClose}
           PaperProps={{
             sx: {
-              backgroundColor: "white",
-              border: "1px solid rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#1a1a2e",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
               borderRadius: "12px",
               mt: 1,
             },
