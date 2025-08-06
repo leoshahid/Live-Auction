@@ -7,28 +7,16 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "auction-backend/src/server.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/auction-backend/src/server.js"
-    },
-    {
-      "src": "/socket.io/(.*)",
-      "dest": "/auction-backend/src/server.js"
-    },
-    {
       "src": "/static/(.*)",
-      "dest": "/auction-simulcast/static/$1"
+      "dest": "/auction-simulcast/build/static/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/auction-simulcast/index.html"
+      "dest": "/auction-simulcast/build/index.html"
     }
   ]
 }
