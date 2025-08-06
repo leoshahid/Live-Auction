@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "auction-simulcast/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/auction-simulcast/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/auction-simulcast/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@react_app_api_url",
+    "REACT_APP_WS_URL": "@react_app_ws_url"
+  }
+} 
