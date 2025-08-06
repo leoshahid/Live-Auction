@@ -101,7 +101,8 @@ class WebSocketService {
 
   private connect() {
     try {
-      this.socket = io("http://localhost:3001", {
+      const socketUrl = process.env.REACT_APP_WS_URL || "http://localhost:3001";
+      this.socket = io(socketUrl, {
         transports: ["websocket", "polling"],
         autoConnect: true,
         reconnection: true,

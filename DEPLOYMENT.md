@@ -59,8 +59,8 @@ git push -u origin main
 5. **Add environment variables:**
    ```
    PORT=3001
-   MONGODB_URI=your_mongodb_atlas_connection_string
-   JWT_SECRET=your_super_secret_jwt_key
+   MONGODB_URI=mongodb+srv://shahidtechtics:1RNb9n6ElkWZQ6rC@cluster0.jcvthiv.mongodb.net/auction_system?retryWrites=true&w=majority&appName=Cluster0
+   JWT_SECRET=live-auction-system-2024-super-secret-jwt-key-production-ready
    JWT_EXPIRE=24h
    CORS_ORIGIN=https://your-frontend-domain.vercel.app
    AUCTION_DURATION=300000
