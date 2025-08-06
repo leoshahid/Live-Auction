@@ -8,6 +8,11 @@ const connectDB = require('./config/database');
 // Load environment variables
 dotenv.config({ path: './config.env' });
 
+// For Vercel deployment, also check for environment variables
+if (process.env.VERCEL) {
+    console.log('Running on Vercel - using environment variables');
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const auctionRoutes = require('./routes/auctions');

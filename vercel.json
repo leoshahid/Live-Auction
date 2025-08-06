@@ -7,9 +7,21 @@
       "config": {
         "distDir": "build"
       }
+    },
+    {
+      "src": "auction-backend/src/server.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/auction-backend/src/server.js"
+    },
+    {
+      "src": "/socket.io/(.*)",
+      "dest": "/auction-backend/src/server.js"
+    },
     {
       "src": "/static/(.*)",
       "dest": "/auction-simulcast/static/$1"
@@ -21,6 +33,12 @@
   ],
   "env": {
     "REACT_APP_API_URL": "@react_app_api_url",
-    "REACT_APP_WS_URL": "@react_app_ws_url"
+    "REACT_APP_WS_URL": "@react_app_ws_url",
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_SECRET": "@jwt_secret",
+    "JWT_EXPIRE": "@jwt_expire",
+    "CORS_ORIGIN": "@cors_origin",
+    "AUCTION_DURATION": "@auction_duration",
+    "BID_EXTENSION_TIME": "@bid_extension_time"
   }
-} 
+}
